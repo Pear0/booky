@@ -7,17 +7,26 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
-#include "sqlite3.h"
+#include "SQLiteCpp/SQLiteCpp.h"
+
+#include "maybe.h"
 
 class Storage {
-    sqlite3 *db;
+    SQLite::Database db;
 
 public:
     explicit Storage(const char *filename);
-    virtual ~Storage();
+    virtual ~Storage() = default;
 
+    maybe<std::string> getPath(const char *key);
 
+    std::vector<std::string> listBookmarks();
+
+    bool putBookmark(const char *key, const char *path, bool overwrite);
+
+    bool deleteBookmark(const char *key);
 
 };
 
